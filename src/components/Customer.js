@@ -1,8 +1,12 @@
 import Link from 'next/link'; 
-
+import { useEffect } from 'react';
+let win = ""
 export default function Customer({contact}) {
     
 
+  useEffect(() => {
+    win = window
+  })
     const handleDelete = async (id) => {
         if (confirm('Are you sure you want to delete this customer?')) {
           await fetch(`/api/customers/${id}`, { method: 'DELETE' });
@@ -51,8 +55,8 @@ export default function Customer({contact}) {
             {contact.name}
         </div>
 
-        <div style={window.innerWidth>800?styles.box2:styles.box1}>
-            <div style={window.innerWidth>800?styles.details:styles.details2}>
+        <div style={win.innerWidth>800?styles.box2:styles.box1}>
+            <div style={win.innerWidth>800?styles.details:styles.details2}>
                 <div style={styles.tileStyle2}>
                     <h3>{findDesc(contact.acServiceDates) || "AC"}</h3>
                     <p style={{ marginLeft: "20px" }}>{calculateMonthsUntilDue(contact.acServiceDates)}</p>

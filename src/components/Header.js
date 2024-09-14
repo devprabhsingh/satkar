@@ -1,11 +1,15 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 
-
+let wind=""
 const Header = ({ onAddContact }) => {
+
+  useEffect(() => {
+    wind = window
+  })
   return (
-    <header style={window.innerWidth>700?styles.header1:styles.header2}>
+    <header style={wind.innerWidth>700?styles.header1:styles.header2}>
       <h1 style={styles.title}>Satkar RO & AC Service</h1>
-      <button onClick={onAddContact} style={window.innerWidth>700?styles.button1:styles.button2}>
+      <button onClick={onAddContact} style={wind.innerWidth>700?styles.button1:styles.button2}>
         Add Customer
       </button>
     </header>
