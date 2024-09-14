@@ -1,13 +1,17 @@
 import Link from 'next/link'; 
 import { useEffect } from 'react';
 let win = ""
-export default function Customer({contact}) {
+export default function Customer({contact,setContacts,contacts}) {
     
 
   useEffect(() => {
     win = window
   })
-    const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
+    if (setContacts === null) {
+      alert('DELETE from the main list')
+      return
+      }
         if (confirm('Are you sure you want to delete this customer?')) {
           await fetch(`/api/customers/${id}`, { method: 'DELETE' });
           setContacts(contacts.filter(contact => contact._id !== id));

@@ -85,7 +85,7 @@ export default function SearchCustomer({ customers }) {
                     ...date,
                     description: highlightText(date.description, query),
                   })),
-                }}
+                }} contacts={filteredCustomers} setContacts={null}
               />
             </li>
           ))}

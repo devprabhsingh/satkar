@@ -47,7 +47,7 @@ export default function Home() {
                        currentDate.getMonth() - recentDate.getMonth();
     return monthsDiff;
   };
-  
+
   const handleSearch = () => {
    
     if (results.length === 0) {
@@ -79,7 +79,7 @@ export default function Home() {
             <div style={styles.container}>
               <div style={styles.contactList}>
                 {contacts.map((contact) => (
-                  <Customer key={contact.id} contact={contact} />
+                  <Customer key={contact.id} contact={contact} contacts={contacts} setContacts={setContacts} />
                 ))}
               </div>
             </div>
@@ -87,7 +87,7 @@ export default function Home() {
             <div style={styles.container}>
               <div style={styles.contactList}>
                 {searchResults.map((contact) => (
-                  <Customer key={contact.id} contact={contact} />
+                  <Customer key={contact.id} contact={contact} contacts={contacts} setContacts={setContacts} />
                 ))}
               </div>
             </div>
