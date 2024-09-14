@@ -1,95 +1,103 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Header from '../components/Header';
+import Search from '../components/Search';
+import Customer from '../components/Customer';
+import ContactForm from '../components/ContactForm';
 
 export default function Home() {
+  const [contacts, setContacts] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+
+  // Fetch contacts from the database when the component mounts
+  useEffect(() => {
+    const fetchContacts = async () => {
+      const response = await fetch('/api/customers');
+      const data = await response.json();
+
+      // Sort contacts by the closest service due date (AC or RO)
+      const sortedContacts = data.sort((a, b) => {
+        const acDueA = calculateMonthsUntilDue(a.acServiceDates);
+        const acDueB = calculateMonthsUntilDue(b.acServiceDates);
+        const roDueA = calculateMonthsUntilDue(a.roServiceDates);
+        const roDueB = calculateMonthsUntilDue(b.roServiceDates);
+
+        // Find the maximum of AC and RO due dates for each contact
+        const dueA = Math.max(acDueA, roDueA);
+        const dueB = Math.max(acDueB, roDueB);
+
+        // Sort in descending order (more months first)
+        return dueB - dueA;
+      });
+
+      setContacts(sortedContacts);
+    };
+
+    fetchContacts();
+  }, []);
+
+  const handleSearch = () => {
+   
+    if (results.length === 0) {
+      setSearchResults([]);
+      console.log('clearing')
+      setIsSearching(false);
+    } else {
+      setSearchResults(results);
+      setIsSearching(true);
+    }
+  };
+
+  const addContact = (contact) => {
+    setContacts([...contacts, contact]);
+    setIsAdding(false); // Hide the form after adding a contact
+  };
+
+  const toggleAddContact = () => {
+    setIsAdding(!isAdding); // Toggle between form and contact list
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <div>
+      <Header onAddContact={toggleAddContact} />
+      {!isAdding && (
+        <>
+          <Search customers={contacts} onSearch={handleSearch} />
+          {!isSearching ? (
+            <div style={styles.container}>
+              <div style={styles.contactList}>
+                {contacts.map((contact) => (
+                  <Customer key={contact.id} contact={contact} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={styles.container}>
+              <div style={styles.contactList}>
+                {searchResults.map((contact) => (
+                  <Customer key={contact.id} contact={contact} />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+      {isAdding && (
+        <ContactForm
+          contacts={contacts}
+          onAdd={addContact}
+          onCancel={toggleAddContact}
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      )}
+    </div>
   );
 }
+
+const styles = {
+  container: {
+    padding: '10px',
+  }
+};
