@@ -39,6 +39,15 @@ export default function Home() {
     fetchContacts();
   }, []);
 
+  const calculateMonthsUntilDue = (serviceDates) => {
+    if (serviceDates.length === 0) return Infinity; // No service date available
+    const recentDate = new Date(Math.max(...serviceDates.map(d => new Date(d.date))));
+    const currentDate = new Date();
+    const monthsDiff = (currentDate.getFullYear() - recentDate.getFullYear()) * 12 +
+                       currentDate.getMonth() - recentDate.getMonth();
+    return monthsDiff;
+  };
+  
   const handleSearch = () => {
    
     if (results.length === 0) {
