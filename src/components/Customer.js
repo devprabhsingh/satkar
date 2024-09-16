@@ -59,8 +59,8 @@ export default function Customer({contact,setContacts,contacts}) {
             {contact.name}
         </div>
 
-        <div style={win.innerWidth>800?styles.box2:styles.box1}>
-            <div style={win.innerWidth>800?styles.details:styles.details2}>
+        <div style={win.innerWidth>700?styles.box2:styles.box1}>
+            <div style={win.innerWidth>700?styles.details:styles.details2}>
                 <div style={styles.tileStyle2}>
                     <h3>{findDesc(contact.acServiceDates) || "AC"}</h3>
                     <p style={{ marginLeft: "20px" }}>{calculateMonthsUntilDue(contact.acServiceDates)}</p>
@@ -76,6 +76,9 @@ export default function Customer({contact,setContacts,contacts}) {
                 <a href={`tel:${contact.phone}`} style={{ ...styles.baseButton, ...styles.callButton }}>
                     Call
                 </a>
+            <a href={`https://wa.me/${contact.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`}
+            style={{ ...styles.baseButton, ...styles.msgButton }}>
+                Msg</a>
 
                 <Link href={`/customer/${contact._id}`}>
                     <button style={{ ...styles.baseButton, ...styles.detailButton }}>
@@ -153,6 +156,9 @@ const styles = {
   detailButton: {
     backgroundColor: '#17a2b8', // Teal for details
     padding:"15px 20px"
+  },
+  msgButton: {
+    backgroundColor: '#fcba03', // Teal for details
   },
   deleteButton: {
     backgroundColor: '#dc3545', // Red for delete
