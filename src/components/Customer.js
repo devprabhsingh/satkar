@@ -135,6 +135,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     height: "9vh",
+    fontSize: "1.1rem",
   },
   contactList: {
     padding: "20px",
@@ -157,6 +158,7 @@ const styles = {
     backgroundColor: "orange",
     padding: "5px",
     fontWeight: "bold",
+    fontSize: "1.3rem",
   },
   descDate: {
     display: "flex",
@@ -164,6 +166,7 @@ const styles = {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    fontWeight: "bold",
   },
   contactItem: {
     marginBottom: "20px",

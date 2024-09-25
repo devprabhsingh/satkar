@@ -14,14 +14,13 @@ const Header = ({ onAddContact }) => {
 const styles = {
   header: {
     display: "flex",
-    backgroundColor: "#4A90E2",
-    padding: "0 20px",
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "column",
   },
   title: {
     padding: "10px 0px",
+    width: "100%",
     color: "white",
     textAlign: "center",
     fontSize: "1.5rem",

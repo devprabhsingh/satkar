@@ -64,7 +64,7 @@ export default function SearchCustomer({ customers, setContacts }) {
       <div style={styles.searchContainer}>
         <input
           type="text"
-          placeholder="Search by name or service description..."
+          placeholder="Search by name.."
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -135,6 +135,8 @@ const styles = {
     color: "white",
     outline: "none",
     borderColor: "#4A90E2",
+    fontWeight: "bold",
+    fontSize: "17px",
   },
   list: {
     listStyleType: "none",

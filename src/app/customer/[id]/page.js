@@ -1,6 +1,5 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import useSWR from "swr";
 
 // Fetcher function for SWR
