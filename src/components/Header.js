@@ -1,15 +1,10 @@
-import React,{useEffect} from 'react';
+import React from "react";
 
-let wind=""
 const Header = ({ onAddContact }) => {
-
-  useEffect(() => {
-    wind = window
-  })
   return (
-    <header style={wind.innerWidth>700?styles.header1:styles.header2}>
+    <header style={styles.header}>
       <h1 style={styles.title}>Satkar RO & AC Service</h1>
-      <button onClick={onAddContact} style={wind.innerWidth>700?styles.button1:styles.button2}>
+      <button onClick={onAddContact} style={styles.button}>
         Add Customer
       </button>
     </header>
@@ -17,57 +12,39 @@ const Header = ({ onAddContact }) => {
 };
 
 const styles = {
-  header1: {
-    display: 'flex',
-    backgroundColor: '#4A90E2',
+  header: {
+    display: "flex",
+    backgroundColor: "#4A90E2",
     padding: "0 20px",
-    justifyContent: 'space-between',
-    alignItems:'center'
-  },
-  header2: {
-    justifyContent:'space-between',
-    display: 'flex',
-    flexDirection:'column'
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "column",
   },
   title: {
-    padding:'10px 0px',
-    color:'white',
-    textAlign:'center',
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    backgroundColor: '#4A90E2',
+    padding: "10px 0px",
+    color: "white",
+    textAlign: "center",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    backgroundColor: "#4A90E2",
   },
-  button1: {
-    display:'block',
-    width: '200px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    color: '#4A90E2',
-    backgroundColor: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-    transition: 'background-color 0.3s ease',
-  },
-  button2: {
-    display:'block',
-    width: '200px',
-    margin: 'auto',
-    padding: '10px 20px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    color: 'white',
-    backgroundColor: '#4A90E2',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-    transition: 'background-color 0.3s ease',
+  button: {
+    display: "block",
+    width: "200px",
+    margin: "10px auto",
+    padding: "10px 20px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    color: "white",
+    backgroundColor: "#28A745",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    transition: "background-color 0.3s ease",
   },
   buttonHover: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
   },
 };
 

@@ -1,7 +1,7 @@
-'use client';
-import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import useSWR from 'swr';
+"use client";
+import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import useSWR from "swr";
 
 // Fetcher function for SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -11,47 +11,130 @@ export default function CustomerDetails() {
   const router = useRouter();
   const { data, error } = useSWR(id ? `/api/customers/${id}` : null, fetcher);
 
-  if (error) return <div style={styles.error}>Failed to load customer data</div>;
+  if (error)
+    return <div style={styles.error}>Failed to load customer data</div>;
   if (!data) return <div style={styles.loading}>Loading...</div>;
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>{data.name}</h1>
       <p style={styles.phone}>Phone: {data.phone}</p>
-      
+
       <div style={styles.section}>
         <h2>AC</h2>
         {data.acServiceDates.length > 0 ? (
           data.acServiceDates.map((date, index) => (
             <div key={index} style={styles.serviceItem}>
-              <p><strong>Date:</strong> {date.date}</p>
-              <p><strong>Description:</strong> {date.description}</p>
-              <p><strong>Price:</strong> Rs.{date.price}</p>
+              <p>
+                <strong>Date:</strong> {date.date}
+              </p>
+              <p>
+                <strong>Description:</strong> {date.description}
+              </p>
+              <p>
+                <strong>Price:</strong> Rs.{date.price}
+              </p>
             </div>
           ))
         ) : (
           <p>No AC service/Repair</p>
         )}
       </div>
-      
+
       <div style={styles.section}>
-        <h2>RO Service</h2>
+        <h2>RO</h2>
         {data.roServiceDates.length > 0 ? (
           data.roServiceDates.map((date, index) => (
             <div key={index} style={styles.serviceItem}>
-              <p><strong>Date:</strong> {date.date}</p>
-              <p><strong>Description:</strong> {date.description}</p>
-              <p><strong>Price:</strong> Rs.{date.price}</p>
+              <p>
+                <strong>Date:</strong> {date.date}
+              </p>
+              <p>
+                <strong>Description:</strong> {date.description}
+              </p>
+              <p>
+                <strong>Price:</strong> Rs.{date.price}
+              </p>
             </div>
           ))
         ) : (
           <p>No RO service/repair</p>
         )}
       </div>
-      
+
+      <div style={styles.section}>
+        <h2>Fridge</h2>
+        {data.fridgeServiceDates.length > 0 ? (
+          data.fridgeServiceDates.map((date, index) => (
+            <div key={index} style={styles.serviceItem}>
+              <p>
+                <strong>Date:</strong> {date.date}
+              </p>
+              <p>
+                <strong>Description:</strong> {date.description}
+              </p>
+              <p>
+                <strong>Price:</strong> Rs.{date.price}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Fridge service/repair</p>
+        )}
+      </div>
+
+      <div style={styles.section}>
+        <h2>Washing Machine</h2>
+        {data.wmServiceDates.length > 0 ? (
+          data.wmServiceDates.map((date, index) => (
+            <div key={index} style={styles.serviceItem}>
+              <p>
+                <strong>Date:</strong> {date.date}
+              </p>
+              <p>
+                <strong>Description:</strong> {date.description}
+              </p>
+              <p>
+                <strong>Price:</strong> Rs.{date.price}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No W.Machine service/repair</p>
+        )}
+      </div>
+
+      <div style={styles.section}>
+        <h2>Geyser</h2>
+        {data.geyserServiceDates.length > 0 ? (
+          data.geyserServiceDates.map((date, index) => (
+            <div key={index} style={styles.serviceItem}>
+              <p>
+                <strong>Date:</strong> {date.date}
+              </p>
+              <p>
+                <strong>Description:</strong> {date.description}
+              </p>
+              <p>
+                <strong>Price:</strong> Rs.{date.price}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Geyser service/repair</p>
+        )}
+      </div>
+
       <div style={styles.buttonContainer}>
-        <button onClick={() => router.push('/')} style={styles.backButton}>Back to Main</button>
-        <button onClick={() => router.push(`/customer/${id}/edit`)} style={styles.editButton}>Edit</button>
+        <button onClick={() => router.push("/")} style={styles.backButton}>
+          Back to Main
+        </button>
+        <button
+          onClick={() => router.push(`/customer/${id}/edit`)}
+          style={styles.editButton}
+        >
+          Edit
+        </button>
       </div>
     </div>
   );
@@ -59,65 +142,65 @@ export default function CustomerDetails() {
 
 const styles = {
   container: {
-    padding: '20px',
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    maxWidth: '600px',
-    margin: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
+    padding: "20px",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    maxWidth: "600px",
+    margin: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
   },
   title: {
-    fontSize: '26px',
-    fontWeight: 'bold',
+    fontSize: "26px",
+    fontWeight: "bold",
   },
   phone: {
-    fontSize: '20px',
-    color: '#555',
+    fontSize: "20px",
+    color: "#555",
   },
   section: {
-    borderTop: '1px solid #ddd',
-    paddingTop: '10px',
+    borderTop: "1px solid #ddd",
+    paddingTop: "10px",
   },
   serviceItem: {
-    marginBottom: '10px',
-    padding: '10px',
-    borderRadius: '4px',
-    backgroundColor: '#f9f9f9',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    marginBottom: "10px",
+    padding: "10px",
+    borderRadius: "4px",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
   },
   buttonContainer: {
-    display: 'flex',
-    gap: '10px',
-    justifyContent: 'center',
+    display: "flex",
+    gap: "10px",
+    justifyContent: "center",
   },
   backButton: {
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    padding: '10px 20px',
-    cursor: 'pointer',
-    fontSize: '16px',
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    padding: "10px 20px",
+    cursor: "pointer",
+    fontSize: "16px",
   },
   editButton: {
-    backgroundColor: '#007BFF',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    padding: '10px 20px',
-    cursor: 'pointer',
-    fontSize: '16px',
+    backgroundColor: "#007BFF",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    padding: "10px 20px",
+    cursor: "pointer",
+    fontSize: "16px",
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
-    padding: '20px',
+    color: "red",
+    textAlign: "center",
+    padding: "20px",
   },
   loading: {
-    textAlign: 'center',
-    padding: '20px',
+    textAlign: "center",
+    padding: "20px",
   },
 };

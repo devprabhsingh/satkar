@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const serviceDateSchema = new mongoose.Schema({
   date: {
@@ -32,8 +32,21 @@ const contactSchema = new mongoose.Schema({
     type: [serviceDateSchema],
     required: false, // Not required, allows empty array
   },
+  fridgeServiceDates: {
+    type: [serviceDateSchema],
+    required: false, // Not required, allows empty array
+  },
+  wmServiceDates: {
+    type: [serviceDateSchema],
+    required: false, // Not required, allows empty array
+  },
+  geyserServiceDates: {
+    type: [serviceDateSchema],
+    required: false, // Not required, allows empty array
+  },
 });
 
-const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
+const Contact =
+  mongoose.models.Contact || mongoose.model("Contact", contactSchema);
 
 export default Contact;

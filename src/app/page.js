@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Search from '../components/Search';
-import Customer from '../components/Customer';
-import ContactForm from '../components/ContactForm';
+import React, { useState, useEffect } from "react";
+import Header from "../components/Header";
+import Search from "../components/Search";
+import Customer from "../components/Customer";
+import ContactForm from "../components/ContactForm";
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
@@ -15,7 +15,7 @@ export default function Home() {
   // Fetch contacts from the database when the component mounts
   useEffect(() => {
     const fetchContacts = async () => {
-      const response = await fetch('/api/customers');
+      const response = await fetch("/api/customers");
       const data = await response.json();
 
       // Sort contacts by the closest service due date (AC or RO)
@@ -41,22 +41,33 @@ export default function Home() {
 
   const calculateMonthsUntilDue = (serviceDates) => {
     if (serviceDates.length === 0) return Infinity; // No service date available
-    const recentDate = new Date(Math.max(...serviceDates.map(d => new Date(d.date))));
+    const recentDate = new Date(
+      Math.max(...serviceDates.map((d) => new Date(d.date)))
+    );
     const currentDate = new Date();
-    const monthsDiff = (currentDate.getFullYear() - recentDate.getFullYear()) * 12 +
-                       currentDate.getMonth() - recentDate.getMonth();
+    const monthsDiff =
+      (currentDate.getFullYear() - recentDate.getFullYear()) * 12 +
+      currentDate.getMonth() -
+      recentDate.getMonth();
     return monthsDiff;
   };
 
   const handleSearch = () => {
-   
     if (results.length === 0) {
       setSearchResults([]);
-      console.log('clearing')
+      console.log("clearing");
       setIsSearching(false);
     } else {
       setSearchResults(results);
       setIsSearching(true);
+    }
+  };
+
+  const deleteContact = async (id) => {
+    if (confirm("Are you sure you want to delete this customer?")) {
+      await fetch(`/api/customers/${id}`, { method: "DELETE" });
+      setContacts(contacts.filter((contact) => contact._id !== id));
+      setSearchResults([]);
     }
   };
 
@@ -71,23 +82,35 @@ export default function Home() {
 
   return (
     <div>
-      <Header onAddContact={toggleAddContact} />
       {!isAdding && (
         <>
-          <Search customers={contacts} onSearch={handleSearch} />
+          <Header onAddContact={toggleAddContact} />
+          <Search
+            customers={contacts}
+            onSearch={handleSearch}
+            setContacts={setContacts}
+          />
           {!isSearching ? (
             <div style={styles.container}>
               <div style={styles.contactList}>
-                {contacts.map((contact) => (
-                  <Customer key={contact.id} contact={contact} contacts={contacts} setContacts={setContacts} />
+                {contacts.map((contact, index) => (
+                  <Customer
+                    key={index}
+                    contact={contact}
+                    deleteContact={deleteContact}
+                  />
                 ))}
               </div>
             </div>
           ) : (
             <div style={styles.container}>
               <div style={styles.contactList}>
-                {searchResults.map((contact) => (
-                  <Customer key={contact.id} contact={contact} contacts={contacts} setContacts={setContacts} />
+                {searchResults.map((contact, index) => (
+                  <Customer
+                    key={index}
+                    contact={contact}
+                    deleteContact={deleteContact}
+                  />
                 ))}
               </div>
             </div>
@@ -107,6 +130,6 @@ export default function Home() {
 
 const styles = {
   container: {
-    padding: '10px',
-  }
+    padding: "10px",
+  },
 };
