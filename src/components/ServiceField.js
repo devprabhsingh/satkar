@@ -86,7 +86,7 @@ const styles = {
   input: {
     width: "100%",
     padding: "10px",
-    fontSize: "16px",
+    fontSize: "17px",
     borderRadius: "5px",
     border: "1px solid #ddd",
     boxShadow: "inset 0px 1px 3px rgba(0, 0, 0, 0.1)",
@@ -101,7 +101,7 @@ const styles = {
   addButton: {
     marginTop: "10px",
     padding: "10px",
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "bold",
     color: "white",
     backgroundColor: "#4A90E2",
@@ -114,7 +114,7 @@ const styles = {
   deleteButton: {
     marginTop: "5px",
     padding: "8px",
-    fontSize: "14px",
+    fontSize: "18px",
     color: "white",
     backgroundColor: "#E94F4F",
     border: "none",
@@ -130,7 +130,7 @@ const styles = {
   },
   button: {
     padding: "10px",
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "bold",
     color: "white",
     backgroundColor: "#4A90E2",

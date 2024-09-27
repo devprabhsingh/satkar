@@ -56,7 +56,6 @@ body {
 
 /* Media Queries */
 @media (max-width: 600px) {
-
   .header h1 {
     font-size: 22px;
   }
@@ -86,10 +85,14 @@ body {
   .button {
     width: 100%;
   }
-
 }
 
-.searchButton:hover{
+.searchButton:hover {
   background-color: white;
-  color:#4A90E2;
+  color: #4a90e2;
+}
+
+.search-input::placeholder {
+  font-size: 18px;
+  font-weight: bold;
 }

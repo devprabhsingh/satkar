@@ -30,7 +30,7 @@ export default function Home() {
         const dueB = Math.max(acDueB, roDueB);
 
         // Sort in descending order (more months first)
-        return dueB - dueA;
+        return dueA - dueB;
       });
 
       setContacts(sortedContacts);

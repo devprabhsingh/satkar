@@ -70,6 +70,7 @@ export default function SearchCustomer({ customers, setContacts }) {
             setQuery(e.target.value);
             handleSearch(); // Trigger search on each change
           }}
+          className="search-input"
           style={styles.input}
         />
         <button
@@ -77,7 +78,7 @@ export default function SearchCustomer({ customers, setContacts }) {
           className="searchButton"
           style={styles.searchButton}
         >
-          Search
+          SEARCH
         </button>
       </div>
 
@@ -127,6 +128,8 @@ const styles = {
     padding: "10px",
     marginRight: "10px",
     border: "2px solid #4A90E2",
+    fontSize: "22px",
+    fontWeight: "bold",
   },
   searchButton: {
     padding: "10px 20px",

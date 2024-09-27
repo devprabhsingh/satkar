@@ -182,7 +182,7 @@ const styles = {
     borderRadius: "4px",
     padding: "10px 20px",
     cursor: "pointer",
-    fontSize: "16px",
+    fontSize: "18px",
   },
   editButton: {
     backgroundColor: "#007BFF",
@@ -191,7 +191,7 @@ const styles = {
     borderRadius: "4px",
     padding: "10px 20px",
     cursor: "pointer",
-    fontSize: "16px",
+    fontSize: "18px",
   },
   error: {
     color: "red",
