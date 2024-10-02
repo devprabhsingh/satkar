@@ -155,11 +155,10 @@ const ContactForm = ({ contacts, onAdd, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
-      <Link href={`/`}>
-        <button type="button" style={styles.backButton}>
-          Back to Main Page
-        </button>
-      </Link>
+      <button type="button" onClick={onCancel} style={styles.backButton}>
+        Back to Main Page
+      </button>
+
       <div style={styles.field}>
         <label style={styles.label}>Name:</label>
         <input
@@ -252,20 +251,21 @@ const styles = {
   },
   label: {
     display: "block",
-    fontSize: "14px",
+    fontSize: "18px",
     fontWeight: "bold",
     marginBottom: "5px",
-    color: "#333",
+    color: "blue",
   },
   input: {
     width: "100%",
     padding: "10px",
-    fontSize: "16px",
+    fontSize: "20px",
     borderRadius: "5px",
     border: "1px solid #ddd",
     boxShadow: "inset 0px 1px 3px rgba(0, 0, 0, 0.1)",
     transition: "border-color 0.2s ease",
     marginBottom: "10px",
+    fontWeight: "bold",
   },
   dateField: {
     marginBottom: "10px",
@@ -338,6 +338,7 @@ const styles = {
     padding: "10px",
     cursor: "pointer",
     fontSize: "18px",
+    marginBottom: "10px",
   },
 };
 

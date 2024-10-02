@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 let win = "";
-export default function Customer({ key, contact, deleteContact }) {
+export default function Customer({ contact, deleteContact }) {
   useEffect(() => {
     win = window;
   });
@@ -15,11 +15,6 @@ export default function Customer({ key, contact, deleteContact }) {
       return "";
     }
     return desc;
-  };
-
-  const parseDateString = (dateString) => {
-    const [day, month, year] = dateString.split("-").map(Number);
-    return new Date(year, month - 1, day); // Month is 0-indexed in JavaScript Date
   };
 
   const serviceDate = (services) => {
@@ -66,9 +61,8 @@ export default function Customer({ key, contact, deleteContact }) {
           </div>
           <div style={styles.tileStyle2}>
             <span style={styles.spanStyle}>Geyser</span>
-            <div style={styles.descdate}>
+            <div style={styles.descDate}>
               <p>{findDesc(contact.geyserServiceDates)}</p>
-
               <p>{serviceDate(contact.geyserServiceDates)}</p>
             </div>
           </div>

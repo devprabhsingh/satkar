@@ -1,12 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DueServices from "./DueServices";
+import { getServiceDueLists } from "../../lib/helpFn";
 
-const Header = ({ onAddContact }) => {
+const Header = ({ onAddContact, customers }) => {
+  const [dueServicesCt, setDueServicesCt] = useState(0);
+  const [showDueServices, setShowDueServices] = useState(false);
+  const [ct, setCt] = useState({
+    acCt: 0,
+    roCt: 0,
+  });
+  const [limits, setLimits] = useState({
+    acLimit: 10,
+    roLimit: 6,
+  });
+  const [dueServicesList, setDueServicesList] = useState({});
+
+  useEffect(() => {
+    const dueServices = getServiceDueLists(
+      customers,
+      limits.acLimit,
+      limits.roLimit
+    );
+    const ac = dueServices.acDue.length;
+    const ro = dueServices.roDue.length;
+
+    setDueServicesCt(ac + ro);
+    setCt({ acCt: ac, roCt: ro });
+    setDueServicesList(dueServices);
+  }, [customers]);
+
   return (
     <header style={styles.header}>
       <h1 style={styles.title}>Satkar RO & AC Service</h1>
-      <button onClick={onAddContact} style={styles.button}>
-        Add Customer
-      </button>
+      <div style={styles.box}>
+        <button onClick={onAddContact} className="button-29">
+          Add Customer
+        </button>
+        <button
+          className="button-29"
+          onClick={() => setShowDueServices(!showDueServices)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          Due{" "}
+          <span
+            style={{ color: "#DC3545", fontSize: "21px", marginLeft: "5px" }}
+          >
+            {dueServicesCt}
+          </span>
+        </button>
+      </div>
+      {showDueServices ? (
+        <DueServices
+          dueServicesList={dueServicesList}
+          ct={ct}
+          setLimits={setLimits}
+        />
+      ) : (
+        ""
+      )}
     </header>
   );
 };
@@ -27,21 +82,11 @@ const styles = {
     fontWeight: "bold",
     backgroundColor: "#4A90E2",
   },
-  button: {
-    display: "block",
-    width: "200px",
-    margin: "10px auto",
-    padding: "10px 20px",
-    fontSize: "18px",
-    fontWeight: "bold",
-    color: "white",
-    backgroundColor: "#28A745",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  buttonHover: {
-    backgroundColor: "#f0f0f0",
+  box: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
   },
 };
 

@@ -31,7 +31,7 @@ export default function Home() {
 
         // Sort in descending order (more months first)
         return dueA - dueB;
-      });
+      }, []);
 
       setContacts(sortedContacts);
     };
@@ -84,7 +84,8 @@ export default function Home() {
     <div>
       {!isAdding && (
         <>
-          <Header onAddContact={toggleAddContact} />
+          <Header onAddContact={toggleAddContact} customers={contacts} />
+
           <Search
             customers={contacts}
             onSearch={handleSearch}
