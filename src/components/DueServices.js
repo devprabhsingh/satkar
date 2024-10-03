@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 let typ = "RO";
 
-const DueServices = ({ dueServicesList, ct, setLimits }) => {
+const DueServices = ({ dueServicesList, ct, limits, setLimits }) => {
   const [dueContacts, setDueContacts] = useState(dueServicesList.roDue);
 
   const showContacts = (type) => {
@@ -21,7 +21,26 @@ const DueServices = ({ dueServicesList, ct, setLimits }) => {
 
   return (
     <div style={styles.dueServicesWrapper}>
-      <div>Set limits</div>
+      <div>
+        Set limits:
+        <br />
+        RO
+        <input
+          type="number"
+          value={limits.roLimit}
+          onChange={(e) =>
+            setLimits({ roLimit: e.target.value, acLimit: limits.acLimit })
+          }
+        />
+        AC
+        <input
+          type="number"
+          value={limits.acLimit}
+          onChange={(e) =>
+            setLimits({ acLimit: e.target.value, roLimit: limits.roLimit })
+          }
+        />
+      </div>
 
       <div style={styles.buttonsWrapper}>
         <button

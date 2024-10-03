@@ -125,9 +125,13 @@ export default function CustomerDetails() {
       </div>
 
       <div style={styles.buttonContainer}>
-        <button onClick={() => router.push("/")} style={styles.backButton}>
+        <button
+          onClick={() => router.push("/", undefined, { shallow: true })}
+          style={styles.backButton}
+        >
           Back to Main
         </button>
+
         <button
           onClick={() => router.push(`/customer/${id}/edit`)}
           style={styles.editButton}

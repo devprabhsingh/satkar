@@ -19,7 +19,6 @@ export default async function handler(req, res) {
     const {
       name,
       phone,
-      address,
       acServiceDates,
       roServiceDates,
       fridgeServiceDates,
@@ -33,7 +32,6 @@ export default async function handler(req, res) {
         {
           name,
           phone,
-          address,
           acServiceDates,
           roServiceDates,
           fridgeServiceDates,

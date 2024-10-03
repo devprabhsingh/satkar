@@ -1,32 +1,37 @@
 import React, { useState } from "react";
 import ServiceField from "./ServiceField"; // Import the new component
-import Link from "next/link";
 
-// Validation function for date
 const validateDate = (date) => {
-  if (date.length === 10) {
-    const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
-    const match = date.match(regex);
-    if (!match) return false;
+  // Replace any forward slashes with hyphens
+  let formattedDate = date.replace(/\//g, "-");
 
-    const [_, day, month, year] = match.map(Number);
-    if (month < 1 || month > 12) return false;
-    if (day < 1 || day > 31) return false;
+  // Match the date in dd-mm-yy or dd-mm-yyyy format
+  const regex = /^(\d{1,2})-(\d{1,2})-(\d{2}|\d{4})$/;
+  const match = formattedDate.match(regex);
 
-    // Create a date object for the provided date
-    const inputDate = new Date(year, month - 1, day);
+  if (!match) return false;
 
-    // Create a date object for the current date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to the start of the day for comparison
+  let [_, day, month, year] = match.map(Number);
 
-    // Check if the date is in the future
-    if (inputDate > today) return false;
+  // Add leading zero if day or month is a single digit
+  day = day < 10 ? `0${day}` : day;
+  month = month < 10 ? `0${month}` : month;
 
-    return true;
-  } else {
-    return false;
+  // If the year is in 2-digit format, add '20' to make it 4 digits
+  if (year < 100) {
+    year = `20${year}`;
   }
+
+  // Create a date object for the provided date
+  const inputDate = new Date(`${year}-${month}-${day}`);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set time to the start of the day for comparison
+
+  // Check if the date is in the future or invalid
+  if (inputDate > today || isNaN(inputDate.getTime())) return false;
+
+  // Return the formatted date
+  return `${day}-${month}-${year}`;
 };
 
 const ContactForm = ({ contacts, onAdd, onCancel }) => {
@@ -60,15 +65,50 @@ const ContactForm = ({ contacts, onAdd, onCancel }) => {
       return;
     }
 
-    const isAcValid = acServiceDates.every(({ date }) => validateDate(date));
-    const isRoValid = roServiceDates.every(({ date }) => validateDate(date));
-    const isGeyserValid = geyserServiceDates.every(({ date }) =>
-      validateDate(date)
-    );
-    const isWmValid = wmServiceDates.every(({ date }) => validateDate(date));
-    const isFridgeValid = fridgeServiceDates.every(({ date }) =>
-      validateDate(date)
-    );
+    const isAcValid = acServiceDates.every(({ date }, index) => {
+      const formattedDate = validateDate(date);
+      if (formattedDate) {
+        acServiceDates[index].date = formattedDate;
+        return true;
+      }
+      return false;
+    });
+
+    const isRoValid = roServiceDates.every(({ date }, index) => {
+      const formattedDate = validateDate(date);
+      if (formattedDate) {
+        roServiceDates[index].date = formattedDate;
+        return true;
+      }
+      return false;
+    });
+
+    const isGeyserValid = geyserServiceDates.every(({ date }, index) => {
+      const formattedDate = validateDate(date);
+      if (formattedDate) {
+        geyserServiceDates[index].date = formattedDate;
+        return true;
+      }
+      return false;
+    });
+
+    const isWmValid = wmServiceDates.every(({ date }, index) => {
+      const formattedDate = validateDate(date);
+      if (formattedDate) {
+        wmServiceDates[index].date = formattedDate;
+        return true;
+      }
+      return false;
+    });
+
+    const isFridgeValid = fridgeServiceDates.every(({ date }, index) => {
+      const formattedDate = validateDate(date);
+      if (formattedDate) {
+        fridgeServiceDates[index].date = formattedDate;
+        return true;
+      }
+      return false;
+    });
 
     if (
       acServiceDates.length === 0 &&

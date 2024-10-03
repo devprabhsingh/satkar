@@ -27,7 +27,7 @@ const Header = ({ onAddContact, customers }) => {
     setDueServicesCt(ac + ro);
     setCt({ acCt: ac, roCt: ro });
     setDueServicesList(dueServices);
-  }, [customers]);
+  }, [customers, limits]);
 
   return (
     <header style={styles.header}>
@@ -47,7 +47,14 @@ const Header = ({ onAddContact, customers }) => {
         >
           Due{" "}
           <span
-            style={{ color: "#DC3545", fontSize: "21px", marginLeft: "5px" }}
+            style={{
+              color: "#fff",
+              fontSize: "21px",
+              marginLeft: "5px",
+              fontStyle: "italic",
+              backgroundColor: "grey",
+              padding: "3px",
+            }}
           >
             {dueServicesCt}
           </span>
@@ -58,6 +65,7 @@ const Header = ({ onAddContact, customers }) => {
           dueServicesList={dueServicesList}
           ct={ct}
           setLimits={setLimits}
+          limits={limits}
         />
       ) : (
         ""

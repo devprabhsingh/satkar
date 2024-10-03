@@ -71,13 +71,21 @@ export default function Customer({ contact, deleteContact }) {
         <div style={styles.buttons}>
           {/* Call and Message buttons */}
           <a
-            href={`tel:${contact.phone}`}
+            href={
+              contact.phone.length === 10
+                ? `tel:+91${contact.phone}`
+                : `tel:${contact.phone}`
+            }
             style={{ ...styles.baseButton, ...styles.callButton }}
           >
             Call
           </a>
           <a
-            href={`https://wa.me/${contact.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`}
+            href={
+              contact.phone.length === 10
+                ? `https://wa.me/+91${contact.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`
+                : `https://wa.me/${contact.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`
+            }
             style={{ ...styles.baseButton, ...styles.msgButton }}
           >
             Msg

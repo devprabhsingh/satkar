@@ -11,7 +11,6 @@ export default function EditCustomer() {
   const { id } = useParams(); // Get the customer ID from URL params
   const router = useRouter();
   const { data, error } = useSWR(id ? `/api/customers/${id}` : null, fetcher);
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [acServiceDates, setAcServiceDates] = useState([]);
@@ -33,76 +32,103 @@ export default function EditCustomer() {
     }
   }, [data]);
 
-  // Validation function for dates
   const validateDate = (date) => {
-    if (date.length === 10) {
-      const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
-      const match = date.match(regex);
-      if (!match) return false;
+    // Replace any forward slashes with hyphens
+    let formattedDate = date.replace(/\//g, "-");
 
-      const [_, day, month, year] = match.map(Number);
-      if (month < 1 || month > 12) return false;
-      if (day < 1 || day > 31) return false;
+    // Match the date in dd-mm-yy or dd-mm-yyyy format
+    const regex = /^(\d{1,2})-(\d{1,2})-(\d{2}|\d{4})$/;
+    const match = formattedDate.match(regex);
 
-      // Create a date object for the provided date
-      const inputDate = new Date(year, month - 1, day);
+    if (!match) return false;
 
-      // Create a date object for the current date
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Set time to the start of the day for comparison
+    let [_, day, month, year] = match.map(Number);
 
-      // Check if the date is in the future
-      if (inputDate > today) return false;
+    // Add leading zero if day or month is a single digit
+    day = day < 10 ? `0${day}` : day;
+    month = month < 10 ? `0${month}` : month;
 
-      return true;
-    } else {
-      return false;
+    // If the year is in 2-digit format, add '20' to make it 4 digits
+    if (year < 100) {
+      year = `20${year}`;
     }
+
+    // Create a date object for the provided date
+    const inputDate = new Date(`${year}-${month}-${day}`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to the start of the day for comparison
+
+    // Check if the date is in the future or invalid
+    if (inputDate > today || isNaN(inputDate.getTime())) return false;
+
+    // Return the formatted date
+    return `${day}-${month}-${year}`;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate AC service dates
-    for (const dateObj of acServiceDates) {
-      if (!validateDate(dateObj.date) || dateObj.date.length !== 10) {
-        alert(
-          "Please ensure all AC service dates are in the format dd-mm-yyyy and are 10 characters long."
-        );
-        return;
+    // Validate and format AC service dates
+    const isAcValid = acServiceDates.every((dateObj, index) => {
+      const formattedDate = validateDate(dateObj.date);
+      if (formattedDate) {
+        acServiceDates[index].date = formattedDate; // Save the formatted date
+        return true;
       }
-    }
+      return false;
+    });
 
-    // Validate RO service dates
-    for (const dateObj of roServiceDates) {
-      if (!validateDate(dateObj.date) || dateObj.date.length !== 10) {
-        alert("RO service dates must be in the format dd-mm-yyyy");
-        return;
+    // Validate and format RO service dates
+    const isRoValid = roServiceDates.every((dateObj, index) => {
+      const formattedDate = validateDate(dateObj.date);
+      if (formattedDate) {
+        roServiceDates[index].date = formattedDate;
+        return true;
       }
-    }
+      return false;
+    });
 
-    // Validate Fridge service dates
-    for (const dateObj of fridgeServiceDates) {
-      if (!validateDate(dateObj.date) || dateObj.date.length !== 10) {
-        alert("FRIDGE service dates must be in the format dd-mm-yyyy");
-        return;
+    // Validate and format Fridge service dates
+    const isFridgeValid = fridgeServiceDates.every((dateObj, index) => {
+      const formattedDate = validateDate(dateObj.date);
+      if (formattedDate) {
+        fridgeServiceDates[index].date = formattedDate;
+        return true;
       }
-    }
+      return false;
+    });
 
-    // Validate WM service dates
-    for (const dateObj of wmServiceDates) {
-      if (!validateDate(dateObj.date) || dateObj.date.length !== 10) {
-        alert("WASHING MACHINE service dates are in the format dd-mm-yyyy");
-        return;
+    // Validate and format Washing Machine service dates
+    const isWmValid = wmServiceDates.every((dateObj, index) => {
+      const formattedDate = validateDate(dateObj.date);
+      if (formattedDate) {
+        wmServiceDates[index].date = formattedDate;
+        return true;
       }
-    }
+      return false;
+    });
 
-    // Validate geyser service dates
-    for (const dateObj of geyserServiceDates) {
-      if (!validateDate(dateObj.date) || dateObj.date.length !== 10) {
-        alert("GEYSER service dates are in the format dd-mm-yyyy");
-        return;
+    // Validate and format Geyser service dates
+    const isGeyserValid = geyserServiceDates.every((dateObj, index) => {
+      const formattedDate = validateDate(dateObj.date);
+      if (formattedDate) {
+        geyserServiceDates[index].date = formattedDate;
+        return true;
       }
+      return false;
+    });
+
+    if (
+      !isAcValid ||
+      !isRoValid ||
+      !isFridgeValid ||
+      !isWmValid ||
+      !isGeyserValid
+    ) {
+      alert(
+        "Please ensure all service dates are in the format dd-mm-yyyy and valid."
+      );
+      return;
     }
 
     // Submit the form if validation passes
@@ -123,8 +149,7 @@ export default function EditCustomer() {
     });
 
     if (response.ok) {
-      // Optionally update SWR cache
-      mutate(`/api/customers/${id}`);
+      mutate(`/api/customers/${id}`); // Optionally update SWR cache
       router.push(`/customer/${id}`); // Redirect to the customer details page
     } else {
       alert("Error updating customer");
@@ -142,6 +167,7 @@ export default function EditCustomer() {
           <label htmlFor="name">Name</label>
           <input
             type="text"
+            required
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -179,6 +205,7 @@ export default function EditCustomer() {
                 style={styles.input}
               />
               <input
+                required
                 type="text"
                 placeholder="Description"
                 value={date.description}
@@ -246,6 +273,7 @@ export default function EditCustomer() {
               />
               <input
                 type="text"
+                required
                 placeholder="Description"
                 value={date.description}
                 onChange={(e) => {
@@ -312,6 +340,7 @@ export default function EditCustomer() {
               />
               <input
                 type="text"
+                required
                 placeholder="Description"
                 value={date.description}
                 onChange={(e) => {
@@ -380,6 +409,7 @@ export default function EditCustomer() {
               />
               <input
                 type="text"
+                required
                 placeholder="Description"
                 value={date.description}
                 onChange={(e) => {
@@ -446,6 +476,7 @@ export default function EditCustomer() {
               />
               <input
                 type="text"
+                required
                 placeholder="Description"
                 value={date.description}
                 onChange={(e) => {

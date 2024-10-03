@@ -11,29 +11,36 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch contacts from the database when the component mounts
   useEffect(() => {
     const fetchContacts = async () => {
-      const response = await fetch("/api/customers");
-      const data = await response.json();
+      try {
+        const response = await fetch("/api/customers");
+        const data = await response.json();
 
-      // Sort contacts by the closest service due date (AC or RO)
-      const sortedContacts = data.sort((a, b) => {
-        const acDueA = calculateMonthsUntilDue(a.acServiceDates);
-        const acDueB = calculateMonthsUntilDue(b.acServiceDates);
-        const roDueA = calculateMonthsUntilDue(a.roServiceDates);
-        const roDueB = calculateMonthsUntilDue(b.roServiceDates);
+        // Sort contacts by the closest service due date (AC or RO)
+        const sortedContacts = data.sort((a, b) => {
+          const acDueA = calculateMonthsUntilDue(a.acServiceDates);
+          const acDueB = calculateMonthsUntilDue(b.acServiceDates);
+          const roDueA = calculateMonthsUntilDue(a.roServiceDates);
+          const roDueB = calculateMonthsUntilDue(b.roServiceDates);
 
-        // Find the maximum of AC and RO due dates for each contact
-        const dueA = Math.max(acDueA, roDueA);
-        const dueB = Math.max(acDueB, roDueB);
+          // Find the maximum of AC and RO due dates for each contact
+          const dueA = Math.max(acDueA, roDueA);
+          const dueB = Math.max(acDueB, roDueB);
 
-        // Sort in descending order (more months first)
-        return dueA - dueB;
-      }, []);
+          // Sort in descending order (more months first)
+          return dueA - dueB;
+        });
 
-      setContacts(sortedContacts);
+        setContacts(sortedContacts);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
     };
 
     fetchContacts();
@@ -82,48 +89,69 @@ export default function Home() {
 
   return (
     <div>
-      {!isAdding && (
-        <>
-          <Header onAddContact={toggleAddContact} customers={contacts} />
-
-          <Search
-            customers={contacts}
-            onSearch={handleSearch}
-            setContacts={setContacts}
+      {loading ? ( // Show the loader while loading is true
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <img
+            style={{ margin: "auto", height: "40vh" }}
+            width="50%"
+            src="favicon.ico"
           />
-          {!isSearching ? (
-            <div style={styles.container}>
-              <div style={styles.contactList}>
-                {contacts.map((contact, index) => (
-                  <Customer
-                    key={index}
-                    contact={contact}
-                    deleteContact={deleteContact}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div style={styles.container}>
-              <div style={styles.contactList}>
-                {searchResults.map((contact, index) => (
-                  <Customer
-                    key={index}
-                    contact={contact}
-                    deleteContact={deleteContact}
-                  />
-                ))}
-              </div>
-            </div>
+          <h2>Loading, please wait..</h2>
+        </div>
+      ) : (
+        <>
+          {!isAdding && (
+            <>
+              <Header onAddContact={toggleAddContact} customers={contacts} />
+
+              <Search
+                customers={contacts}
+                onSearch={handleSearch}
+                setContacts={setContacts}
+              />
+              {!isSearching ? (
+                <div style={styles.container}>
+                  <div style={styles.contactList}>
+                    {contacts.map((contact, index) => (
+                      <Customer
+                        key={index}
+                        contact={contact}
+                        deleteContact={deleteContact}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div style={styles.container}>
+                  <div style={styles.contactList}>
+                    {searchResults.map((contact, index) => (
+                      <Customer
+                        key={index}
+                        contact={contact}
+                        deleteContact={deleteContact}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          {isAdding && (
+            <ContactForm
+              contacts={contacts}
+              onAdd={addContact}
+              onCancel={toggleAddContact}
+            />
           )}
         </>
-      )}
-      {isAdding && (
-        <ContactForm
-          contacts={contacts}
-          onAdd={addContact}
-          onCancel={toggleAddContact}
-        />
       )}
     </div>
   );
