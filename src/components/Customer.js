@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useEffect } from "react";
 let win = "";
+let text1 = `Hello%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service.%0A%0AYour%20last%20`;
+let text2 = `%0A%0ACall%20or%20Msg%20us%20to%20service%20your%20`;
 export default function Customer({ contact, deleteContact }) {
   useEffect(() => {
     win = window;
@@ -80,16 +82,45 @@ export default function Customer({ contact, deleteContact }) {
           >
             Call
           </a>
-          <a
-            href={
-              contact.phone.length === 10
-                ? `https://wa.me/+91${contact.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`
-                : `https://wa.me/${contact.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`
-            }
-            style={{ ...styles.baseButton, ...styles.msgButton }}
-          >
-            Msg
-          </a>
+          {serviceDate(contact.roServiceDates) === "N/A" ? (
+            <a
+              href={
+                contact.phone.length === 10
+                  ? `https://wa.me/+91${
+                      contact.phone
+                    }?text=${text1}AC%20service%20was%20on%20${serviceDate(
+                      contact.acServiceDates
+                    )}%20${text2}%20AC.`
+                  : `https://wa.me/${
+                      contact.phone
+                    }?text=${text1}AC%20service%20was%20on%20${serviceDate(
+                      contact.acServiceDates
+                    )}%20${text2}%20AC.`
+              }
+              style={{ ...styles.baseButton, ...styles.msgButton }}
+            >
+              Msg
+            </a>
+          ) : (
+            <a
+              href={
+                contact.phone.length === 10
+                  ? `https://wa.me/+91${
+                      contact.phone
+                    }?text=${text1}RO%20service%20was%20on%20${serviceDate(
+                      contact.roServiceDates
+                    )}%20${text2}%20RO.`
+                  : `https://wa.me/${
+                      contact.phone
+                    }?text=${text1}RO%20service%20was%20on%20${serviceDate(
+                      contact.roServiceDates
+                    )}%20${text2}%20RO.`
+              }
+              style={{ ...styles.baseButton, ...styles.msgButton }}
+            >
+              Msg
+            </a>
+          )}
 
           <Link href={`/customer/${contact._id}`}>
             <button style={{ ...styles.baseButton, ...styles.detailButton }}>

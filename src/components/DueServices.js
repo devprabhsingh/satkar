@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 let typ = "RO";
+let texToSend = `Hello%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service.%0A%0AYour%20last%20`;
+let tex2 = `months%20ago.%0A%0ACall%20or%20Msg%20us%20to%20service%20your%20`;
 
 const DueServices = ({ dueServicesList, ct, limits, setLimits }) => {
   const [dueContacts, setDueContacts] = useState(dueServicesList.roDue);
@@ -21,27 +23,39 @@ const DueServices = ({ dueServicesList, ct, limits, setLimits }) => {
 
   return (
     <div style={styles.dueServicesWrapper}>
-      <div>
-        Set limits:
-        <br />
-        RO
-        <input
-          type="number"
-          value={limits.roLimit}
-          onChange={(e) =>
-            setLimits({ roLimit: e.target.value, acLimit: limits.acLimit })
-          }
-        />
-        AC
-        <input
-          type="number"
-          value={limits.acLimit}
-          onChange={(e) =>
-            setLimits({ acLimit: e.target.value, roLimit: limits.roLimit })
-          }
-        />
+      <div style={{ margin: "10px" }}>
+        <div style={{ margin: "5px" }}>
+          <h3 style={{ margin: 0, padding: 0 }}>Set limits - months:</h3>
+          <h4
+            style={{ display: "inline-block", margin: 0, marginRight: "5px" }}
+          >
+            RO
+          </h4>
+          <input
+            type="number"
+            value={limits.roLimit}
+            style={styles.input}
+            onChange={(e) =>
+              setLimits({ roLimit: e.target.value, acLimit: limits.acLimit })
+            }
+          />
+        </div>
+        <div style={{ margin: "5px" }}>
+          <h4
+            style={{ display: "inline-block", margin: 0, marginRight: "5px" }}
+          >
+            AC
+          </h4>
+          <input
+            type="number"
+            value={limits.acLimit}
+            style={styles.input}
+            onChange={(e) =>
+              setLimits({ acLimit: e.target.value, roLimit: limits.roLimit })
+            }
+          />
+        </div>
       </div>
-
       <div style={styles.buttonsWrapper}>
         <button
           style={{ ...styles.btn, backgroundColor: "lightgrey" }}
@@ -102,7 +116,11 @@ const DueServices = ({ dueServicesList, ct, limits, setLimits }) => {
                   Call
                 </a>
                 <a
-                  href={`https://wa.me/${cont.phone}?text=Hello%2C%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service`}
+                  href={
+                    cont.phone.length === 10
+                      ? `https://wa.me/+91${cont.phone}?text=${texToSend}${cont.type}%20service%20was%20on%20${cont.latestService.date}%20which%20was%20${cont.months}%20${tex2}${cont.type}.`
+                      : `https://wa.me/${cont.phone}?text=${texToSend}${cont.type}%20service%20was%20on%20${cont.latestService.date}%20which%20was%20${cont.months}%20${tex2}${cont.type}.`
+                  }
                   style={{ ...styles.baseButton, ...styles.msgButton }}
                 >
                   Msg
@@ -134,6 +152,10 @@ const styles = {
     display: "flex",
     alignItems: "center",
     width: "100%",
+  },
+  input: {
+    width: "50px",
+    fontSize: "18px",
   },
   btn: {
     fontSize: "18px",

@@ -27,8 +27,12 @@ const validateDate = (date) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set time to the start of the day for comparison
 
+  // Create a date object for tomorrow
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Set tomorrow's date
+
   // Check if the date is in the future or invalid
-  if (inputDate > today || isNaN(inputDate.getTime())) return false;
+  if (inputDate > tomorrow || isNaN(inputDate.getTime())) return false;
 
   // Return the formatted date
   return `${day}-${month}-${year}`;
