@@ -101,7 +101,7 @@ export default function Home() {
         >
           <img
             style={{ margin: "auto", height: "40vh" }}
-            width="50%"
+            width="80%"
             src="favicon.ico"
           />
           <h2>Loading, please wait..</h2>

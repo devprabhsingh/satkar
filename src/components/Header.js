@@ -10,7 +10,7 @@ const Header = ({ onAddContact, customers }) => {
     roCt: 0,
   });
   const [limits, setLimits] = useState({
-    acLimit: 10,
+    acLimit: 11,
     roLimit: 6,
   });
   const [dueServicesList, setDueServicesList] = useState({});

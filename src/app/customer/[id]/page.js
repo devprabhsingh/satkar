@@ -16,8 +16,25 @@ export default function CustomerDetails() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>{data.name}</h1>
-      <p style={styles.phone}>Phone: {data.phone}</p>
+      <div style={styles.buttonContainer}>
+        <button
+          onClick={() => router.push("/", undefined, { shallow: true })}
+          style={styles.backButton}
+        >
+          Back to Main
+        </button>
+
+        <button
+          onClick={() => router.push(`/customer/${id}/edit`)}
+          style={styles.editButton}
+        >
+          Edit
+        </button>
+      </div>
+      <h1 style={{ ...styles.title, marginBottom: 0 }}>{data.name}</h1>
+      <p style={{ ...styles.phone, marginTop: 0 }}>
+        Phone: {data.phone.slice(0, 5)}-{data.phone.slice(5, data.phone.length)}
+      </p>
 
       <div style={styles.section}>
         <h2>AC</h2>
@@ -31,7 +48,7 @@ export default function CustomerDetails() {
                 <strong>Description:</strong> {date.description}
               </p>
               <p>
-                <strong>Price:</strong> Rs.{date.price}
+                <strong>Price:</strong> Rs. {date.price}
               </p>
             </div>
           ))
@@ -161,7 +178,6 @@ const styles = {
   },
   phone: {
     fontSize: "20px",
-    color: "#555",
   },
   section: {
     borderTop: "1px solid #ddd",
@@ -173,6 +189,7 @@ const styles = {
     borderRadius: "4px",
     backgroundColor: "#f9f9f9",
     boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    fontSize: "18px",
   },
   buttonContainer: {
     display: "flex",

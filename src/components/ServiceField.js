@@ -51,7 +51,7 @@ const ServiceField = ({
             style={styles.input}
           />
           <input
-            type="text"
+            type="number"
             value={item.price}
             onChange={(e) => handleFieldChange(index, "price", e.target.value)}
             placeholder="Price"

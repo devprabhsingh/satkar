@@ -216,7 +216,7 @@ const ContactForm = ({ contacts, onAdd, onCancel }) => {
       <div style={styles.field}>
         <label style={styles.label}>Phone Number:</label>
         <input
-          type="text"
+          type="number"
           value={formattedPhone}
           onChange={handlePhoneChange}
           style={styles.input}
@@ -297,7 +297,6 @@ const styles = {
     display: "block",
     fontSize: "18px",
     fontWeight: "bold",
-    marginBottom: "5px",
     color: "blue",
   },
   input: {

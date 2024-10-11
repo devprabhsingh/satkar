@@ -23,21 +23,80 @@ export default function SearchCustomer({ customers, setContacts }) {
     }
   };
 
+  const normalizeDate = (inputDate) => {
+    // Replace slashes with hyphens
+    let date = inputDate.replace(/\//g, "-");
+
+    // Split the date string
+    let parts = date.split("-");
+
+    // If the date has 2 parts (e.g., "21-3"), add 3rd part for year
+    if (parts.length === 3) {
+      let [day, month, year] = parts;
+
+      // Add leading zeros if necessary
+      if (day.length === 1) day = `0${day}`;
+      if (month.length === 1) month = `0${month}`;
+
+      // Handle year expansion (e.g., '24' -> '2024')
+      if (year.length === 2) year = `20${year}`;
+
+      // Return the normalized date in the format "DD-MM-YYYY"
+      return `${day}-${month}-${year}`;
+    }
+
+    return inputDate; // If input doesn't match the expected format, return as is
+  };
+
   const handleSearch = () => {
     if (query.trim() === "") {
       return;
     }
+
     const results = customers.filter((customer) => {
-      const nameMatch = customer.name
-        .toLowerCase()
-        .includes(query.toLowerCase());
-      const acServiceMatch = customer.acServiceDates.some((date) =>
-        date.description.toLowerCase().includes(query.toLowerCase())
+      const lowerCaseQuery = query.toLowerCase();
+      const normalizedQuery = normalizeDate(query);
+
+      const nameMatch = customer.name.toLowerCase().includes(lowerCaseQuery);
+
+      const acServiceMatch = customer.acServiceDates.some(
+        (date) =>
+          date.description.toLowerCase().includes(lowerCaseQuery) ||
+          date.date.includes(normalizedQuery) // match the query with the date string
       );
-      const roServiceMatch = customer.roServiceDates.some((date) =>
-        date.description.toLowerCase().includes(query.toLowerCase())
+
+      const roServiceMatch = customer.roServiceDates.some(
+        (date) =>
+          date.description.toLowerCase().includes(lowerCaseQuery) ||
+          date.date.includes(normalizedQuery)
       );
-      return nameMatch || acServiceMatch || roServiceMatch;
+
+      const fridgeServiceMatch = customer.fridgeServiceDates.some(
+        (date) =>
+          date.description.toLowerCase().includes(lowerCaseQuery) ||
+          date.date.includes(normalizedQuery)
+      );
+
+      const wmServiceMatch = customer.wmServiceDates.some(
+        (date) =>
+          date.description.toLowerCase().includes(lowerCaseQuery) ||
+          date.date.includes(normalizedQuery)
+      );
+
+      const geyserServiceMatch = customer.geyserServiceDates.some(
+        (date) =>
+          date.description.toLowerCase().includes(lowerCaseQuery) ||
+          date.date.includes(normalizedQuery)
+      );
+
+      return (
+        nameMatch ||
+        acServiceMatch ||
+        roServiceMatch ||
+        fridgeServiceMatch ||
+        wmServiceMatch ||
+        geyserServiceMatch
+      );
     });
 
     setFilteredCustomers(results);
