@@ -131,6 +131,7 @@ export default function SearchCustomer({ customers, setContacts }) {
           }}
           className="search-input"
           style={styles.input}
+          name="search"
         />
         <button
           onClick={handleSearch}
