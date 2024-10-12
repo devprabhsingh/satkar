@@ -3,6 +3,9 @@ import { getTodayContacts, getMonthContacts } from "../../lib/helpFn";
 
 const AdvanceFilterBtns = ({ contacts, setFilteredCustomers }) => {
   const [type, setType] = useState("all");
+  const [allCt, setAllCt] = useState();
+  const [todayCt, setTodayCt] = useState();
+  const [monthCt, setMonthCt] = useState();
 
   useEffect(() => {
     if (type === "all") {
@@ -10,18 +13,23 @@ const AdvanceFilterBtns = ({ contacts, setFilteredCustomers }) => {
       document.getElementById("today-btn").style.backgroundColor = "white";
       document.getElementById("month-btn").style.backgroundColor = "white";
       setFilteredCustomers(contacts);
+      setAllCt(contacts.length);
     } else if (type === "today") {
       document.getElementById("all-btn").style.backgroundColor = "white";
       document.getElementById("today-btn").style.backgroundColor = "skyblue";
       document.getElementById("month-btn").style.backgroundColor = "white";
-      setFilteredCustomers(getTodayContacts(contacts));
+      let c = getTodayContacts(contacts);
+      setFilteredCustomers(c);
+      setTodayCt(c.length);
     } else if (type === "month") {
       document.getElementById("all-btn").style.backgroundColor = "white";
       document.getElementById("today-btn").style.backgroundColor = "white";
       document.getElementById("month-btn").style.backgroundColor = "skyblue";
-      setFilteredCustomers(getMonthContacts(contacts));
+      let c = getMonthContacts(contacts);
+      setFilteredCustomers(c);
+      setMonthCt(c.length);
     }
-  }, [type]);
+  }, [type, allCt, todayCt, monthCt]);
 
   return (
     <div style={styles.btnBox}>
@@ -31,6 +39,7 @@ const AdvanceFilterBtns = ({ contacts, setFilteredCustomers }) => {
         style={{ ...styles.btn, backgroundColor: "skyblue" }}
       >
         All
+        <span style={{ fontWeight: "bold", paddingLeft: "10px" }}>{allCt}</span>
       </button>
       <button
         id="today-btn"
@@ -38,6 +47,9 @@ const AdvanceFilterBtns = ({ contacts, setFilteredCustomers }) => {
         style={styles.btn}
       >
         today
+        <span style={{ fontWeight: "bold", paddingLeft: "10px" }}>
+          {todayCt}
+        </span>
       </button>
       <button
         id="month-btn"
@@ -45,6 +57,9 @@ const AdvanceFilterBtns = ({ contacts, setFilteredCustomers }) => {
         style={styles.btn}
       >
         month
+        <span style={{ fontWeight: "bold", paddingLeft: "10px" }}>
+          {monthCt}
+        </span>
       </button>
     </div>
   );
@@ -57,7 +72,7 @@ const styles = {
     alignItems: "center",
   },
   btn: {
-    width: "25%",
+    width: "30%",
     backgroundColor: "white",
     borderColor: "blue",
     padding: "12px",

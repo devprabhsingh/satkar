@@ -49,35 +49,27 @@ export default function SearchCustomer({ customers, setContacts }) {
       const normalizedQuery = normalizeDate(query);
 
       const nameMatch = customer.name.toLowerCase().includes(lowerCaseQuery);
-
+      if (nameMatch) {
+        return nameMatch;
+      }
       const acServiceMatch = customer.acServiceDates.some(
-        (date) =>
-          date.description.toLowerCase().includes(lowerCaseQuery) ||
-          date.date.includes(normalizedQuery) // match the query with the date string
+        (date) => date.date.includes(normalizedQuery) // match the query with the date string
       );
 
-      const roServiceMatch = customer.roServiceDates.some(
-        (date) =>
-          date.description.toLowerCase().includes(lowerCaseQuery) ||
-          date.date.includes(normalizedQuery)
+      const roServiceMatch = customer.roServiceDates.some((date) =>
+        date.date.includes(normalizedQuery)
       );
 
-      const fridgeServiceMatch = customer.fridgeServiceDates.some(
-        (date) =>
-          date.description.toLowerCase().includes(lowerCaseQuery) ||
-          date.date.includes(normalizedQuery)
+      const fridgeServiceMatch = customer.fridgeServiceDates.some((date) =>
+        date.date.includes(normalizedQuery)
       );
 
-      const wmServiceMatch = customer.wmServiceDates.some(
-        (date) =>
-          date.description.toLowerCase().includes(lowerCaseQuery) ||
-          date.date.includes(normalizedQuery)
+      const wmServiceMatch = customer.wmServiceDates.some((date) =>
+        date.date.includes(normalizedQuery)
       );
 
-      const geyserServiceMatch = customer.geyserServiceDates.some(
-        (date) =>
-          date.description.toLowerCase().includes(lowerCaseQuery) ||
-          date.date.includes(normalizedQuery)
+      const geyserServiceMatch = customer.geyserServiceDates.some((date) =>
+        date.date.includes(normalizedQuery)
       );
 
       return (
@@ -89,7 +81,6 @@ export default function SearchCustomer({ customers, setContacts }) {
         geyserServiceMatch
       );
     });
-
     setFilteredCustomers(results);
   };
 
@@ -113,7 +104,7 @@ export default function SearchCustomer({ customers, setContacts }) {
       <div style={styles.searchContainer}>
         <input
           type="text"
-          placeholder="Search by name.."
+          placeholder="Search name or date.."
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -145,11 +136,9 @@ export default function SearchCustomer({ customers, setContacts }) {
                   name: highlightText(customer.name, query),
                   acServiceDates: customer.acServiceDates.map((date) => ({
                     ...date,
-                    description: highlightText(date.description, query),
                   })),
                   roServiceDates: customer.roServiceDates.map((date) => ({
                     ...date,
-                    description: highlightText(date.description, query),
                   })),
                 }}
                 deleteContact={deleteContact}

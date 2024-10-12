@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Search from "../components/Search";
-import Customer from "../components/Customer";
 import ContactForm from "../components/ContactForm";
 
 export default function Home() {
