@@ -1,13 +1,8 @@
 import Link from "next/link";
 import { useEffect } from "react";
-let win = "";
 let text1 = `Hello%20I%20am%20Arvinder%20Singh%20from%20Satkar%20RO%20and%20AC%20service.%0A%0AYour%20last%20`;
 let text2 = `%0A%0ACall%20or%20Msg%20us%20to%20service%20your%20`;
 export default function Customer({ contact, deleteContact }) {
-  useEffect(() => {
-    win = window;
-  });
-
   const findDesc = (services) => {
     if (services.length < 1) {
       return "";
@@ -31,41 +26,61 @@ export default function Customer({ contact, deleteContact }) {
     <div key={contact._id} style={styles.contactItem}>
       <div style={styles.tileStyle1}>{contact.name}</div>
 
-      <div style={win.innerWidth > 700 ? styles.box2 : styles.box1}>
-        <div style={win.innerWidth > 700 ? styles.details : styles.details2}>
+      <div style={styles.box}>
+        <div style={styles.details}>
           <div style={styles.tileStyle2}>
             <span style={styles.spanStyle}>AC</span>
             <div style={styles.descDate}>
-              <p>{findDesc(contact.acServiceDates)}</p>
-              <p>{serviceDate(contact.acServiceDates)}</p>
+              <p style={{ wordBreak: "break-all" }}>
+                {findDesc(contact.acServiceDates)}
+              </p>
+              <p style={{ marginLeft: "15px" }}>
+                {serviceDate(contact.acServiceDates)}
+              </p>
             </div>
           </div>
           <div style={styles.tileStyle2}>
             <span style={styles.spanStyle}>RO</span>
             <div style={styles.descDate}>
-              <p>{findDesc(contact.roServiceDates)}</p>
-              <p>{serviceDate(contact.roServiceDates)}</p>
+              <p style={{ wordBreak: "break-all" }}>
+                {findDesc(contact.roServiceDates)}
+              </p>
+              <p style={{ marginLeft: "15px" }}>
+                {serviceDate(contact.roServiceDates)}
+              </p>
             </div>
           </div>
           <div style={styles.tileStyle2}>
             <span style={styles.spanStyle}>Fridge</span>
             <div style={styles.descDate}>
-              <p>{findDesc(contact.fridgeServiceDates)}</p>
-              <p>{serviceDate(contact.fridgeServiceDates)}</p>
+              <p style={{ wordBreak: "break-all" }}>
+                {findDesc(contact.fridgeServiceDates)}
+              </p>
+              <p style={{ marginLeft: "15px" }}>
+                {serviceDate(contact.fridgeServiceDates)}
+              </p>
             </div>
           </div>
           <div style={styles.tileStyle2}>
             <span style={styles.spanStyle}>W.Machine</span>
             <div style={styles.descDate}>
-              <p>{findDesc(contact.wmServiceDates)}</p>
-              <p>{serviceDate(contact.wmServiceDates)}</p>
+              <p style={{ wordBreak: "break-all" }}>
+                {findDesc(contact.wmServiceDates)}
+              </p>
+              <p style={{ marginLeft: "15px" }}>
+                {serviceDate(contact.wmServiceDates)}
+              </p>
             </div>
           </div>
           <div style={styles.tileStyle2}>
             <span style={styles.spanStyle}>Geyser</span>
             <div style={styles.descDate}>
-              <p>{findDesc(contact.geyserServiceDates)}</p>
-              <p>{serviceDate(contact.geyserServiceDates)}</p>
+              <p style={{ wordBreak: "break-all" }}>
+                {findDesc(contact.geyserServiceDates)}
+              </p>
+              <p style={{ marginLeft: "15px" }}>
+                {serviceDate(contact.geyserServiceDates)}
+              </p>
             </div>
           </div>
         </div>
@@ -143,18 +158,11 @@ export default function Customer({ contact, deleteContact }) {
 }
 
 const styles = {
-  box1: {
+  box: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "column",
-  },
-  box2: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    flexDirection: "row",
   },
   tileStyle1: {
     fontSize: "1.6rem",
@@ -178,14 +186,10 @@ const styles = {
   },
   details: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-  },
-  details2: {
-    width: "100%",
-    flexDirection: "column",
   },
   spanStyle: {
     backgroundColor: "orange",

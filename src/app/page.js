@@ -8,9 +8,8 @@ import ContactForm from "../components/ContactForm";
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+
   const [isAdding, setIsAdding] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch contacts from the database when the component mounts
@@ -59,25 +58,6 @@ export default function Home() {
     return monthsDiff;
   };
 
-  const handleSearch = () => {
-    if (results.length === 0) {
-      setSearchResults([]);
-      console.log("clearing");
-      setIsSearching(false);
-    } else {
-      setSearchResults(results);
-      setIsSearching(true);
-    }
-  };
-
-  const deleteContact = async (id) => {
-    if (confirm("Are you sure you want to delete this customer?")) {
-      await fetch(`/api/customers/${id}`, { method: "DELETE" });
-      setContacts(contacts.filter((contact) => contact._id !== id));
-      setSearchResults([]);
-    }
-  };
-
   const addContact = (contact) => {
     setContacts([...contacts, contact]);
     setIsAdding(false); // Hide the form after adding a contact
@@ -112,36 +92,7 @@ export default function Home() {
             <>
               <Header onAddContact={toggleAddContact} customers={contacts} />
 
-              <Search
-                customers={contacts}
-                onSearch={handleSearch}
-                setContacts={setContacts}
-              />
-              {!isSearching ? (
-                <div style={styles.container}>
-                  <div style={styles.contactList}>
-                    {contacts.map((contact, index) => (
-                      <Customer
-                        key={index}
-                        contact={contact}
-                        deleteContact={deleteContact}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div style={styles.container}>
-                  <div style={styles.contactList}>
-                    {searchResults.map((contact, index) => (
-                      <Customer
-                        key={index}
-                        contact={contact}
-                        deleteContact={deleteContact}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
+              <Search customers={contacts} setContacts={setContacts} />
             </>
           )}
           {isAdding && (

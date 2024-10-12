@@ -88,6 +88,9 @@ const DueServices = ({ dueServicesList, ct, limits, setLimits }) => {
         ) : (
           <h2 style={{ textAlign: "center" }}>No dues</h2>
         )}
+        <a href="sms:+1234567890,+0987654321,+11234567890,+10987654321,+11223344556">
+          Send SMS
+        </a>
         {dueContacts.map((cont, index) => {
           return (
             <div key={index} style={styles.contactBox}>

@@ -72,6 +72,14 @@ export default function EditCustomer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //check phone number
+    if (phone.trim()) {
+      if (phone.length !== 10) {
+        alert("check phone number length");
+        return false;
+      }
+    }
+
     // Validate and format AC service dates
     const isAcValid = acServiceDates.every((dateObj, index) => {
       const formattedDate = validateDate(dateObj.date);
@@ -182,10 +190,12 @@ export default function EditCustomer() {
         <div style={styles.formGroup}>
           <label htmlFor="phone">Phone</label>
           <input
-            type="text"
+            type="number"
             id="phone"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              setPhone(e.target.value);
+            }}
             style={styles.input}
           />
         </div>
@@ -203,7 +213,7 @@ export default function EditCustomer() {
                 value={date.date}
                 onChange={(e) => {
                   const newDates = [...acServiceDates];
-                  newDates[index].date = e.target.value;
+                  newDates[index].date = e.target.value.trim();
                   setAcServiceDates(newDates);
                 }}
                 style={styles.input}
@@ -234,8 +244,13 @@ export default function EditCustomer() {
               <button
                 type="button"
                 onClick={() => {
-                  const newDates = acServiceDates.filter((_, i) => i !== index);
-                  setAcServiceDates(newDates);
+                  let yes = confirm("DELETE this AC entry ?");
+                  if (yes) {
+                    const newDates = acServiceDates.filter(
+                      (_, i) => i !== index
+                    );
+                    setAcServiceDates(newDates);
+                  }
                 }}
                 style={styles.deleteButton}
               >
@@ -245,12 +260,13 @@ export default function EditCustomer() {
           ))}
           <button
             type="button"
-            onClick={() =>
+            onClick={(e) => {
+              e.preventDefault();
               setAcServiceDates([
                 ...acServiceDates,
                 { date: "", description: "", price: "" },
-              ])
-            }
+              ]);
+            }}
             style={styles.addButton}
           >
             Add Another AC Service/Repair
@@ -270,7 +286,7 @@ export default function EditCustomer() {
                 value={date.date}
                 onChange={(e) => {
                   const newDates = [...roServiceDates];
-                  newDates[index].date = e.target.value;
+                  newDates[index].date = e.target.value.trim();
                   setRoServiceDates(newDates);
                 }}
                 style={styles.input}
@@ -301,8 +317,13 @@ export default function EditCustomer() {
               <button
                 type="button"
                 onClick={() => {
-                  const newDates = roServiceDates.filter((_, i) => i !== index);
-                  setRoServiceDates(newDates);
+                  let yes = confirm("DELETE this RO entry?");
+                  if (yes) {
+                    const newDates = roServiceDates.filter(
+                      (_, i) => i !== index
+                    );
+                    setRoServiceDates(newDates);
+                  }
                 }}
                 style={styles.deleteButton}
               >
@@ -312,12 +333,13 @@ export default function EditCustomer() {
           ))}
           <button
             type="button"
-            onClick={() =>
+            onClick={(e) => {
+              e.preventDefault();
               setRoServiceDates([
                 ...roServiceDates,
                 { date: "", description: "", price: "" },
-              ])
-            }
+              ]);
+            }}
             style={styles.addButton}
           >
             Add RO Service/Repair
@@ -337,7 +359,7 @@ export default function EditCustomer() {
                 value={date.date}
                 onChange={(e) => {
                   const newDates = [...fridgeServiceDates];
-                  newDates[index].date = e.target.value;
+                  newDates[index].date = e.target.value.trim();
                   setFridgeServiceDates(newDates);
                 }}
                 style={styles.input}
@@ -368,10 +390,13 @@ export default function EditCustomer() {
               <button
                 type="button"
                 onClick={() => {
-                  const newDates = fridgeServiceDates.filter(
-                    (_, i) => i !== index
-                  );
-                  setFridgeServiceDates(newDates);
+                  let yes = confirm("DELETE this FRIDGE entry?");
+                  if (yes) {
+                    const newDates = fridgeServiceDates.filter(
+                      (_, i) => i !== index
+                    );
+                    setFridgeServiceDates(newDates);
+                  }
                 }}
                 style={styles.deleteButton}
               >
@@ -381,12 +406,13 @@ export default function EditCustomer() {
           ))}
           <button
             type="button"
-            onClick={() =>
+            onClick={(e) => {
+              e.preventDefault();
               setFridgeServiceDates([
                 ...fridgeServiceDates,
                 { date: "", description: "", price: "" },
-              ])
-            }
+              ]);
+            }}
             style={styles.addButton}
           >
             Add Fridge Service/Repair
@@ -406,7 +432,7 @@ export default function EditCustomer() {
                 value={date.date}
                 onChange={(e) => {
                   const newDates = [...wmServiceDates];
-                  newDates[index].date = e.target.value;
+                  newDates[index].date = e.target.value.trim();
                   setWmServiceDates(newDates);
                 }}
                 style={styles.input}
@@ -437,8 +463,13 @@ export default function EditCustomer() {
               <button
                 type="button"
                 onClick={() => {
-                  const newDates = wmServiceDates.filter((_, i) => i !== index);
-                  setWmServiceDates(newDates);
+                  let yes = confirm("DELETE this entry?");
+                  if (yes) {
+                    const newDates = wmServiceDates.filter(
+                      (_, i) => i !== index
+                    );
+                    setWmServiceDates(newDates);
+                  }
                 }}
                 style={styles.deleteButton}
               >
@@ -448,12 +479,13 @@ export default function EditCustomer() {
           ))}
           <button
             type="button"
-            onClick={() =>
+            onClick={(e) => {
+              e.preventDefault();
               setWmServiceDates([
                 ...wmServiceDates,
                 { date: "", description: "", price: "" },
-              ])
-            }
+              ]);
+            }}
             style={styles.addButton}
           >
             Add W.Machine Service/Repair
@@ -473,7 +505,7 @@ export default function EditCustomer() {
                 value={date.date}
                 onChange={(e) => {
                   const newDates = [...geyserServiceDates];
-                  newDates[index].date = e.target.value;
+                  newDates[index].date = e.target.value.trim();
                   setGeyserServiceDates(newDates);
                 }}
                 style={styles.input}
@@ -504,10 +536,13 @@ export default function EditCustomer() {
               <button
                 type="button"
                 onClick={() => {
-                  const newDates = geyserServiceDates.filter(
-                    (_, i) => i !== index
-                  );
-                  setGeyserServiceDates(newDates);
+                  let yes = confirm("DELETE this GEYSER entry?");
+                  if (yes) {
+                    const newDates = geyserServiceDates.filter(
+                      (_, i) => i !== index
+                    );
+                    setGeyserServiceDates(newDates);
+                  }
                 }}
                 style={styles.deleteButton}
               >
@@ -517,12 +552,13 @@ export default function EditCustomer() {
           ))}
           <button
             type="button"
-            onClick={() =>
+            onClick={(e) => {
+              e.preventDefault();
               setGeyserServiceDates([
                 ...geyserServiceDates,
                 { date: "", description: "", price: "" },
-              ])
-            }
+              ]);
+            }}
             style={styles.addButton}
           >
             Add Geyser Service/Repair

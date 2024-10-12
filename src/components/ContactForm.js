@@ -198,7 +198,7 @@ const ContactForm = ({ contacts, onAdd, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form}>
+    <form style={styles.form}>
       <button type="button" onClick={onCancel} style={styles.backButton}>
         Back to Main Page
       </button>
@@ -269,7 +269,7 @@ const ContactForm = ({ contacts, onAdd, onCancel }) => {
       />
 
       <div style={styles.buttonContainer}>
-        <button type="submit" style={styles.submitButton}>
+        <button onClick={handleSubmit} style={styles.submitButton}>
           Add Customer
         </button>
         <button type="button" onClick={onCancel} style={styles.cancelButton}>

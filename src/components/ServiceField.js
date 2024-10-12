@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ServiceField = ({
   serviceDates,
@@ -7,7 +7,9 @@ const ServiceField = ({
   showDeleteButtons,
   setShowDeleteButtons,
 }) => {
-  const handleAddDateField = () => {
+  const [dateErr, setDateErr] = useState("");
+  const handleAddDateField = (e) => {
+    e.preventDefault();
     setServiceDates([
       ...serviceDates,
       { date: "", description: "", price: "" },
@@ -15,7 +17,8 @@ const ServiceField = ({
     setShowDeleteButtons(true);
   };
 
-  const handleDeleteDateField = (index) => {
+  const handleDeleteDateField = (e, index) => {
+    e.preventDefault();
     setServiceDates((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -27,6 +30,30 @@ const ServiceField = ({
     });
   };
 
+  const handleDateChange = (index, field, value) => {
+    setDateErr("");
+    // Trim any extra spaces from the entered value
+    const trimmedValue = value.trim();
+
+    // Regular expression to allow only numbers, `/`, and `-`
+    const validPattern = /^(\d+[\/-]\d+[\/-]\d+)$/;
+
+    // Always update the state with the current value
+    setServiceDates((prev) => {
+      const updatedFields = [...prev];
+      updatedFields[index][field] = trimmedValue;
+      return updatedFields;
+    });
+
+    // Validate the input
+    if (
+      trimmedValue.length < 6 ||
+      trimmedValue.length > 12 ||
+      !validPattern.test(trimmedValue)
+    ) {
+      setDateErr("please enter valid date");
+    }
+  };
   return (
     <div>
       <button onClick={handleAddDateField} style={styles.addButton}>
@@ -34,13 +61,16 @@ const ServiceField = ({
       </button>
       {serviceDates.map((item, index) => (
         <div key={index} style={styles.dateField}>
-          <input
-            type="text"
-            value={item.date}
-            onChange={(e) => handleFieldChange(index, "date", e.target.value)}
-            placeholder="dd-mm-yyyy"
-            style={styles.input}
-          />
+          <div>
+            <input
+              type="text"
+              value={item.date}
+              onChange={(e) => handleDateChange(index, "date", e.target.value)}
+              placeholder="dd-mm-yyyy"
+              style={styles.input}
+            />
+            <p style={{ color: "red" }}>{dateErr}</p>
+          </div>
           <input
             type="text"
             value={item.description}
@@ -60,7 +90,7 @@ const ServiceField = ({
           {showDeleteButtons && serviceDates.length > 0 && (
             <button
               type="button"
-              onClick={() => handleDeleteDateField(index)}
+              onClick={(e) => handleDeleteDateField(e, index)}
               style={styles.deleteButton}
             >
               Delete

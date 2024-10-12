@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Customer from "./Customer";
+import AdvanceFilterBtns from "./AdvanceFilterBtns";
 
 export default function SearchCustomer({ customers, setContacts }) {
   const [query, setQuery] = useState("");
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
-  const [searchTriggered, setSearchTriggered] = useState(false);
-
-  useEffect(() => {
-    if (query.trim() === "") {
-      setFilteredCustomers([]);
-      setSearchTriggered(false);
-    } else {
-      handleSearch();
-    }
-  }, [query]);
+  const [filteredCustomers, setFilteredCustomers] = useState(customers);
 
   const deleteContact = async (id) => {
     if (confirm("Are you sure you want to delete this customer?")) {
@@ -100,7 +91,6 @@ export default function SearchCustomer({ customers, setContacts }) {
     });
 
     setFilteredCustomers(results);
-    setSearchTriggered(true);
   };
 
   // Highlight the search query in the customer data
@@ -141,8 +131,11 @@ export default function SearchCustomer({ customers, setContacts }) {
           SEARCH
         </button>
       </div>
-
-      {searchTriggered && filteredCustomers.length > 0 && (
+      <AdvanceFilterBtns
+        contacts={customers}
+        setFilteredCustomers={setFilteredCustomers}
+      />
+      {filteredCustomers.length > 0 && (
         <ul style={styles.list}>
           {filteredCustomers.map((customer) => (
             <li key={customer._id} style={styles.listItem}>
@@ -165,8 +158,7 @@ export default function SearchCustomer({ customers, setContacts }) {
           ))}
         </ul>
       )}
-
-      {searchTriggered && filteredCustomers.length === 0 && (
+      {filteredCustomers.length === 0 && (
         <ul style={styles.list}>
           <li style={styles.listItem}>No results found</li>
         </ul>
